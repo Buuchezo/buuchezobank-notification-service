@@ -1,33 +1,158 @@
 spring:
+  # ============================================================
+  # APPLICATION
+  # ============================================================
+
+  # Name used to identify this microservice
   application:
     name: notification-service
 
+
+  # ============================================================
+  # DATABASE
+  # ============================================================
+
+  # PostgreSQL database connection
   datasource:
-    url: jdbc:postgresql://localhost:5432/buuchezobank_notification_db #POSTGRESQL DATABASE CONNECTION
+    # Database URL: PostgreSQL + host + port + database name
+    url: jdbc:postgresql://localhost:5432/buuchezobank_notification_db
+
+    # PostgreSQL username
     username: postgres
-    password: Kadinyah02+++
+
+    # Read password from environment variable
+    password: ${DB_PASSWORD}
+
+
+  # ============================================================
+  # JPA / HIBERNATE
+  # ============================================================
 
   jpa:
     hibernate:
+      # Automatically update database tables based on entities
       ddl-auto: update
 
+
+  # ============================================================
+  # KAFKA
+  # ============================================================
+
+  # Kafka consumer configuration
+  kafka:
+
+    # Address of the Kafka broker
+    bootstrap-servers: localhost:9092
+
+    consumer:
+
+      # Consumer group used by this service
+      group-id: notification-group
+
+      # If no offset exists, start reading from the oldest message
+      auto-offset-reset: earliest
+
+      # Automatically commit consumed message offsets
+      enable-auto-commit: true
+
+      # Convert Kafka message key → Java String
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+      # Handles errors when converting Kafka JSON into a Java object
+      value-deserializer: org.springframework.kafka.support.ErrorHandlingDeserializer
+
+      properties:
+
+        # Use JsonDeserializer to convert JSON → Java object
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+
+        # Map the event class from the producer service
+        # to the equivalent event class in this service
+        #
+        # Producer class → Consumer class
+        spring.json.type.mapping: com.buuchezo.useraccountservice.kafka.dto.UserRegistrationEvent:com.buuchezo.notificationservice.kafka.dto.UserRegistrationEvent
+
+  # ============================================================
+  # EMAIL / GMAIL SMTP
+  # ============================================================
+
+  # Gmail SMTP server used to send emails
+  mail:
+    # Gmail SMTP server
+    host: smtp.gmail.com
+
+    # SMTP port using STARTTLS
+    port: 587
+
+    # Gmail account that sends the emails
+    username: masinde156@gmail.com
+
+    # Gmail App Password
+    # Stored as an environment variable for security
+    password: ${APP_EMAIL_PASSWORD}
+
+    properties:
+      mail:
+        smtp:
+          # SMTP authentication is required
+          auth: true
+
+          # Enable encrypted connection using STARTTLS
+          starttls:
+            enable: true
+
+            # Require STARTTLS encryption
+            required: true
+
+# ============================================================
+# SERVER
+# ============================================================
+
+# Port used by the notification-service
 server:
   port: 8083
 
-  #Actuator config, health monitoring
-management:
-    endpoints:
-      web:
-        exposure:
-          include: "*"
 
-  #Eureka
+# ============================================================
+# ACTUATOR
+# ============================================================
+
+# Spring Boot Actuator for monitoring and health checks
+management:
+  endpoints:
+    web:
+
+      # Expose all actuator endpoints
+      exposure:
+        include: "*"
+
+
+# ============================================================
+# EUREKA
+# ============================================================
+
+# Eureka service discovery configuration
 eureka:
-    client:
-      register-with-eureka: true
-      fetch-registry: true
-      service-url:
-        defaultZone: http://localhost:8761/eureka/
-    instance:
-      prefer-ip-address: true
-      instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+
+    # Register this service with Eureka
+    register-with-eureka: true
+
+    # Discover other services registered with Eureka
+    fetch-registry: true
+
+    # Address of the Eureka server
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+
+  instance:
+
+    # Register the service using its IP address
+    prefer-ip-address: true
+
+    # Create a unique ID for this service instance
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+
+  #SMTP EMAIL CONFIG

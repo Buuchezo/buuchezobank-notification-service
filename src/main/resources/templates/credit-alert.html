@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 30px;
+            background: #f9f9f9;
+        }
+
+        .amount {
+            font-size: 32px;
+            color: #28a745;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .details {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1 th:text="${bankName}">BUUCHEZO Bank</h1>
+    </div>
+    <div class="content">
+        <h2>Credit Alert</h2>
+        <p>Dear <span th:text="${name}">Customer</span>,</p>
+        <p>Your account has been credited with:</p>
+        <div class="amount" th:text="${currency} + ' ' + ${amount}">$ 1,000.00</div>
+        <div class="details">
+            <p><strong>Transaction Reference:</strong> <span th:text="${reference}">TXN123456</span></p>
+            <p><strong>Account:</strong> <span th:text="${accountNumber}">0012345</span></p>
+            <p><strong>Description:</strong> <span th:text="${description}">Transfer</span></p>
+            <p><strong>Date:</strong> <span th:text="${date}">2024-01-15</span></p>
+            <p><strong>Current Balance:</strong> <span th:text="${balance}">****</span></p>
+        </div>
+        <p>Thank you for banking with us!</p>
+    </div>
+    <div class="footer">
+        <p>© 2026 Buuchezo Bank. All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>
