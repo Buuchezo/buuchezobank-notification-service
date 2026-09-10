@@ -1,6 +1,7 @@
 package com.buuchezo.notificationservice.kafka.service;
 
 
+import com.buuchezo.notificationservice.kafka.dto.BalanceUpdateEvent;
 import com.buuchezo.notificationservice.kafka.dto.UserRegistrationEvent;
 import com.buuchezo.notificationservice.service.impl.EmailServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +24,17 @@ public class NotificationConsumerListener {
             log.error("Error sending email out: {}", e.getMessage());
         }
     }
+
+    @KafkaListener(topics = "balance-update-notification-event", groupId = "notification-group")
+    public void consumeBalanceUpdateEvent(BalanceUpdateEvent event) {
+        log.info("Received balance update  event: {}", event);
+        try {
+            emailService.sendTransactionAlertEmail(event);
+        } catch (Exception e) {
+            log.error("Error sending Balance update email out: {}", e.getMessage());
+        }
+    }
+
+
 
 }
