@@ -40,12 +40,10 @@ spring:
 
   # Kafka consumer configuration
   kafka:
-
     # Address of the Kafka broker
     bootstrap-servers: localhost:9092
 
     consumer:
-
       # Consumer group used by this service
       group-id: notification-group
 
@@ -59,15 +57,14 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
       # Handles errors when converting Kafka JSON into a Java object
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
 
       properties:
-
-        # Use JsonDeserializer to convert JSON → Java object
+        # Delegate actual JSON deserialization to JsonDeserializer
         spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
 
-        # Map the event class from the producer service
-        # to the equivalent event class in this service
+        # Map event classes from the producer service
+        # to the equivalent event classes in this service
         #
         # Producer class → Consumer class
         spring.json.type.mapping: >-
@@ -75,6 +72,7 @@ spring:
           com.buuchezo.notificationservice.kafka.dto.UserRegistrationEvent,
           com.buuchezo.useraccountservice.kafka.dto.BalanceUpdateEvent:
           com.buuchezo.notificationservice.kafka.dto.BalanceUpdateEvent
+
 
   # ============================================================
   # EMAIL / GMAIL SMTP
@@ -108,6 +106,7 @@ spring:
             # Require STARTTLS encryption
             required: true
 
+
 # ============================================================
 # SERVER
 # ============================================================
@@ -125,7 +124,6 @@ server:
 management:
   endpoints:
     web:
-
       # Expose all actuator endpoints
       exposure:
         include: "*"
@@ -138,7 +136,6 @@ management:
 # Eureka service discovery configuration
 eureka:
   client:
-
     # Register this service with Eureka
     register-with-eureka: true
 
@@ -149,14 +146,9 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-
   instance:
-
     # Register the service using its IP address
     prefer-ip-address: true
 
     # Create a unique ID for this service instance
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-
-
-  #SMTP EMAIL CONFIG
