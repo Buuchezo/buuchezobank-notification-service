@@ -59,7 +59,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
       # Handles errors when converting Kafka JSON into a Java object
-      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
 
       properties:
 
@@ -71,10 +71,10 @@ spring:
         #
         # Producer class → Consumer class
         spring.json.type.mapping: >-
-         com.buuchezo.useraccountservice.kafka.dto.UserRegistrationEvent:
-         com.buuchezo.notificationservice.kafka.dto.UserRegistrationEvent,
-         com.buuchezo.useraccountservice.kafka.dto.BalanceUpdateEvent:
-         com.buuchezo.notificationservice.kafka.dto.BalanceUpdateEvent
+          com.buuchezo.useraccountservice.kafka.dto.UserRegistrationEvent:
+          com.buuchezo.notificationservice.kafka.dto.UserRegistrationEvent,
+          com.buuchezo.useraccountservice.kafka.dto.BalanceUpdateEvent:
+          com.buuchezo.notificationservice.kafka.dto.BalanceUpdateEvent
 
   # ============================================================
   # EMAIL / GMAIL SMTP
