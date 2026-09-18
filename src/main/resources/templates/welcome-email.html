@@ -1,257 +1,549 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Nova Bank</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Welcome to Buuchezo Bank</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333333;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background: #eef4f9;
+            color: #17324d;
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-text-size-adjust: 100%;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
+        .email-wrapper {
+            width: 100%;
+            padding: 40px 16px;
+        }
+
+        .email-container {
+            width: 100%;
+            max-width: 620px;
+            margin: 0 auto;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border: 1px solid #e1eaf2;
+            border-radius: 18px;
+            box-shadow: 0 12px 35px rgba(6, 61, 116, 0.10);
         }
 
-        .header {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 40px 20px;
+        .hero {
+            padding: 42px 35px 48px;
+            background: linear-gradient(
+                    135deg,
+                    #063d74 0%,
+                    #07559b 60%,
+                    #143fbd 100%
+            );
             text-align: center;
         }
 
-        .logo {
-            font-size: 48px;
-            font-weight: bold;
+        .logo-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 18px;
+            background: #ffffff;
+            color: #07559b;
+            border-radius: 17px;
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .brand {
             color: #ffffff;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            font-size: 27px;
+            font-weight: 700;
+            letter-spacing: -0.7px;
+        }
+
+        .tagline {
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 14px;
+        }
+
+        .accent-line {
+            height: 5px;
+            background: #28c7c1;
         }
 
         .content {
-            background-color: #ffffff;
-            padding: 40px 30px;
-            border-radius: 30px 30px 0 0;
-            margin-top: -20px;
+            padding: 42px 35px;
         }
 
-        .welcome-title {
-            color: #333333;
-            font-size: 28px;
-            margin-bottom: 20px;
-            font-weight: 600;
+        .eyebrow {
+            margin-bottom: 10px;
+            color: #07559b;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .title {
+            margin: 0;
+            color: #102f4a;
+            font-size: 30px;
+            line-height: 1.25;
+            font-weight: 700;
         }
 
         .greeting {
-            color: #666666;
-            font-size: 18px;
-            margin-bottom: 30px;
+            margin: 22px 0;
+            color: #17324d;
+            font-size: 16px;
+        }
+
+        .paragraph {
+            margin: 0 0 18px;
+            color: #657789;
+            font-size: 15px;
+            line-height: 1.75;
         }
 
         .account-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 32px 0;
+            padding: 30px;
+            background: linear-gradient(
+                    135deg,
+                    #063d74 0%,
+                    #07559b 65%,
+                    #143fbd 100%
+            );
+            border-radius: 17px;
             color: #ffffff;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 30px 0;
-            text-align: center;
         }
 
-        .account-label {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 5px;
+        .account-card-label {
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 12px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
         }
 
         .account-number {
-            font-size: 32px;
-            font-weight: bold;
+            margin-top: 12px;
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
             letter-spacing: 2px;
-            margin-bottom: 10px;
+            overflow-wrap: anywhere;
         }
 
-        .account-type {
-            font-size: 16px;
-            opacity: 0.9;
+        .account-status {
+            margin-top: 15px;
+            color: #ffffff;
+            font-size: 13px;
         }
 
-        .features {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin: 30px 0;
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            margin-right: 6px;
+            background: #28c7c1;
+            border-radius: 50%;
         }
 
-        .feature {
-            flex: 1 1 calc(50% - 20px);
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
+        .section-title {
+            margin: 32px 0 18px;
+            color: #17324d;
+            font-size: 18px;
+        }
+
+        .feature-card {
+            padding: 18px;
+            border: 1px solid #e3ebf2;
+            border-radius: 13px;
         }
 
         .feature-icon {
-            font-size: 24px;
-            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            margin-bottom: 12px;
+            background: #e9f7f7;
+            color: #087f82;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 700;
         }
 
         .feature-title {
-            font-weight: 600;
-            color: #333333;
-            margin-bottom: 5px;
+            color: #17324d;
+            font-size: 14px;
+            font-weight: 700;
         }
 
         .feature-description {
-            color: #666666;
-            font-size: 14px;
+            margin-top: 4px;
+            color: #8091a1;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .cta-box {
+            margin-top: 32px;
+            padding: 24px;
+            background: #f3f8fc;
+            border: 1px solid #dfeaf2;
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .cta-title {
+            margin: 0 0 8px;
+            color: #17324d;
+            font-size: 18px;
+        }
+
+        .cta-text {
+            margin: 0 0 18px;
+            color: #718496;
+            font-size: 13px;
+            line-height: 1.6;
         }
 
         .button {
             display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff;
+            padding: 13px 26px;
+            background: linear-gradient(
+                    135deg,
+                    #07559b 0%,
+                    #143fbd 100%
+            );
+            color: #ffffff !important;
             text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            margin: 20px 0;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .security-note {
+            margin-top: 28px;
+            padding: 17px 18px;
+            background: #f4f8fc;
+            border-left: 4px solid #28c7c1;
+            border-radius: 8px;
+            color: #526b80;
+            font-size: 12px;
+            line-height: 1.65;
         }
 
         .footer {
+            padding: 30px 35px;
+            background: #f5f8fb;
+            border-top: 1px solid #e7edf3;
             text-align: center;
-            padding: 30px;
-            background-color: #f8f9fa;
-            color: #999999;
-            font-size: 14px;
         }
 
-        .social-links {
-            margin: 20px 0;
+        .footer-brand {
+            margin-bottom: 8px;
+            color: #17324d;
+            font-size: 15px;
+            font-weight: 700;
         }
 
-        .social-link {
-            display: inline-block;
-            margin: 0 10px;
-            color: #667eea;
-            text-decoration: none;
+        .footer-text {
+            color: #8a99a8;
+            font-size: 11px;
+            line-height: 1.7;
         }
 
-        .security-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background-color: #28a745;
-            color: #ffffff;
-            border-radius: 50px;
-            font-size: 12px;
-            margin-top: 20px;
+        @media screen and (max-width: 600px) {
+            .email-wrapper {
+                padding: 15px 8px;
+            }
+
+            .hero {
+                padding: 35px 22px 40px;
+            }
+
+            .content {
+                padding: 32px 22px;
+            }
+
+            .footer {
+                padding: 25px 22px;
+            }
+
+            .title {
+                font-size: 25px;
+            }
+
+            .account-card {
+                padding: 25px 20px;
+            }
+
+            .account-number {
+                font-size: 23px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <div class="header">
-        <div class="logo" th:text="${bankName}">BUUCHEZO BANK</div>
-        <div style="color: #ffffff; opacity: 0.9;">Your Trusted Financial Partner</div>
-    </div>
 
-    <div class="content">
-        <h1 class="welcome-title" th:text="'Welcome to ' + ${bankName} + '!'">Welcome to Buuchezo Bank!</h1>
+<div class="email-wrapper">
 
-        <div class="greeting" th:text="'Dear ' + ${firstName} + ' ' + ${lastName} + ','">Dear John Doe,</div>
+    <main class="email-container">
 
-        <p>Thank you for choosing Buuchezo Bank for your banking needs. We're excited to have you on board and look forward
-            to helping you achieve your financial goals.</p>
+        <header class="hero">
 
-        <div class="account-card">
-            <div class="account-label">Your Savings Account Number</div>
-            <div class="account-number" th:text="${accountNumber}">00 12345</div>
-            <div class="account-type">Savings Account • Active</div>
-        </div>
-
-        <p>Your account has been successfully created and is ready for use. You can now:</p>
-
-        <div class="features">
-            <div class="feature">
-                <div class="feature-icon">💰</div>
-                <div class="feature-title">Make Deposits</div>
-                <div class="feature-description">Add funds to your account anytime</div>
+            <div class="logo-badge">
+                B
             </div>
-            <div class="feature">
-                <div class="feature-icon">💸</div>
-                <div class="feature-title">Transfer Money</div>
-                <div class="feature-description">Send money instantly to anyone</div>
+
+            <div
+                    class="brand"
+                    th:text="${bankName}"
+            >
+                Buuchezo Bank
             </div>
-            <div class="feature">
-                <div class="feature-icon">📱</div>
-                <div class="feature-title">Mobile Banking</div>
-                <div class="feature-description">Bank on the go with our app</div>
+
+            <div class="tagline">
+                Your money. Your future.
             </div>
-            <div class="feature">
-                <div class="feature-icon">🔒</div>
-                <div class="feature-title">Secure Payments</div>
-                <div class="feature-description">Shop online with confidence</div>
+
+        </header>
+
+        <div class="accent-line"></div>
+
+        <section class="content">
+
+            <div class="eyebrow">
+                Account successfully created
             </div>
-        </div>
 
-        <div style="text-align: center;">
-            <a href="#" class="button">Get Started Now</a>
-        </div>
+            <h1 class="title">
 
-        <div style="border-top: 1px solid #eeeeee; margin: 30px 0;"></div>
+                Welcome to
+                <span th:text="${bankName}">
+                    Buuchezo Bank
+                </span>
 
-        <h3 style="color: #333333;">What's Next?</h3>
-        <ul style="color: #666666; padding-left: 20px;">
-            <li style="margin-bottom: 10px;">Log in to your account using your email and password</li>
-            <li style="margin-bottom: 10px;">Set up your security preferences</li>
-            <li style="margin-bottom: 10px;">Make your first deposit to start earning interest</li>
-            <li style="margin-bottom: 10px;">Download our mobile app for 24/7 access</li>
-        </ul>
+            </h1>
 
-        <p style="color: #666666; font-style: italic; margin-top: 30px;">
-            "Your financial journey with us begins today. We're here to support you every step of the way."
-        </p>
+            <p class="greeting">
 
-        <div style="text-align: center; margin: 30px 0;">
-            <span class="security-badge">✓ 256-bit SSL Encrypted</span>
-            <span class="security-badge" style="background-color: #17a2b8;">✓ FDIC Insured</span>
-        </div>
+                Hello
 
-        <div style="background-color: #e8f4fd; padding: 20px; border-radius: 10px; margin-top: 30px;">
-            <p style="margin: 0; color: #0056b3;">
-                <strong>📞 Need Help?</strong><br>
-                Contact our 24/7 customer support at 1-800-BUUCHEZO-BANK or email support@buuchezobank.com
+                <strong>
+
+                    <span th:text="${firstName}">
+                        John
+                    </span>
+
+                    <span th:text="${lastName}">
+                        Doe
+                    </span>
+
+                </strong>,
+
             </p>
-        </div>
-    </div>
 
-    <div class="footer">
-        <div class="social-links">
-            <a href="#" class="social-link">Facebook</a> •
-            <a href="#" class="social-link">Twitter</a> •
-            <a href="#" class="social-link">LinkedIn</a> •
-            <a href="#" class="social-link">Instagram</a>
-        </div>
-        <p>© 2026 Buuchezo Bank. All rights reserved.</p>
-        <p style="margin-top: 10px;">
-            <a href="#" style="color: #999999;">Privacy Policy</a> |
-            <a href="#" style="color: #999999;">Terms of Service</a> |
-            <a href="#" style="color: #999999;">Unsubscribe</a>
-        </p>
-        <p style="margin-top: 20px; font-size: 12px;">
-            This email was sent to <span th:text="${email}">support@buuchezobank.com</span><br>
-            BUUCHEZO Bank, 123 Financial District, Delhi, New York, NY 10001
-        </p>
-    </div>
+            <p class="paragraph">
+
+                Thank you for choosing Buuchezo Bank.
+                Your account has been successfully created
+                and is ready to use.
+
+            </p>
+
+            <p class="paragraph">
+
+                We've designed your banking experience around
+                simplicity, transparency and security, giving
+                you the tools you need to manage your money
+                with confidence.
+
+            </p>
+
+            <section class="account-card">
+
+                <div class="account-card-label">
+                    Your account number
+                </div>
+
+                <div
+                        class="account-number"
+                        th:text="${accountNumber}"
+                >
+                    0008265619
+                </div>
+
+                <div class="account-status">
+
+                    <span class="status-dot"></span>
+
+                    Account active
+
+                </div>
+
+            </section>
+
+            <h2 class="section-title">
+                Banking built around you
+            </h2>
+
+            <div class="features">
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        $
+                    </div>
+
+                    <div class="feature-title">
+                        Manage your money
+                    </div>
+
+                    <div class="feature-description">
+                        View your balance and keep track
+                        of your account activity.
+                    </div>
+
+                </article>
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        →
+                    </div>
+
+                    <div class="feature-title">
+                        Move money
+                    </div>
+
+                    <div class="feature-description">
+                        Transfer money and keep track
+                        of your transactions.
+                    </div>
+
+                </article>
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <div class="feature-title">
+                        Stay informed
+                    </div>
+
+                    <div class="feature-description">
+                        Receive transaction alerts when
+                        activity happens.
+                    </div>
+
+                </article>
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        🔒
+                    </div>
+
+                    <div class="feature-title">
+                        Security first
+                    </div>
+
+                    <div class="feature-description">
+                        Built with security at the centre
+                        of your banking experience.
+                    </div>
+
+                </article>
+
+            </div>
+
+            <section class="cta-box">
+
+                <h3 class="cta-title">
+                    Ready to get started?
+                </h3>
+
+                <p class="cta-text">
+                    Sign in to your Buuchezo Bank account
+                    and explore your new banking experience.
+                </p>
+
+                <a
+                        class="button"
+                        href="#"
+                >
+                    Sign in to Buuchezo Bank
+                </a>
+
+            </section>
+
+            <aside class="security-note">
+
+                <strong>Security reminder</strong><br>
+
+                Buuchezo Bank will never ask you for your
+                password, PIN, CVV, or one-time security code
+                by email.
+
+            </aside>
+
+        </section>
+
+        <footer class="footer">
+
+            <div class="footer-brand">
+                Buuchezo Bank
+            </div>
+
+            <div class="footer-text">
+
+                Your money. Your future.<br><br>
+
+                This is an automated email from Buuchezo Bank.
+                Please do not reply to this message.<br><br>
+
+                This email was sent to
+
+                <span th:text="${email}">
+                    customer@example.com
+                </span>
+
+                <br><br>
+
+                © 2026 Buuchezo Bank. All rights reserved.
+
+            </div>
+
+        </footer>
+
+    </main>
+
 </div>
+
 </body>
 </html>

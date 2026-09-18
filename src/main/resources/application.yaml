@@ -15,13 +15,13 @@ spring:
   # PostgreSQL database connection
   datasource:
     # Database URL: PostgreSQL + host + port + database name
-    url: ${DB_URL_NOTIFICATION}
+    url: jdbc:postgresql://localhost:5432/buuchezobank_notification_db
 
     # PostgreSQL username
-    username: ${DB_USERNAME}
+    username: postgres
 
     # Read password from environment variable
-    password: ${DB_PASSWORD}
+    password: Kadinyah02+++
 
 
   # ============================================================

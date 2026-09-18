@@ -1,6 +1,8 @@
 package com.buuchezo.notificationservice.enums;
 
 public enum NotificationType {
-    EMAIL,
-    SMS
+    TRANSACTION,
+    ACCOUNT,
+    SECURITY,
+    SYSTEM
 }
