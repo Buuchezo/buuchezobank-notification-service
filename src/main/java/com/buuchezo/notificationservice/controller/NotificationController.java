@@ -14,11 +14,15 @@ import java.util.List;
 @RequestMapping("/api/notifications")
 public class NotificationController {
 
+    private static final String USER_EMAIL_HEADER =
+            "X-User-Email";
+
     private final NotificationService notificationService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<NotificationDto>>> getNotifications(
-            @RequestParam String email
+    public ResponseEntity<ApiResponse<List<NotificationDto>>>
+    getNotifications(
+            @RequestHeader(USER_EMAIL_HEADER) String email
     ) {
 
         List<NotificationDto> notifications =
@@ -34,8 +38,9 @@ public class NotificationController {
     }
 
     @GetMapping("/unread")
-    public ResponseEntity<ApiResponse<List<NotificationDto>>> getUnreadNotifications(
-            @RequestParam String email
+    public ResponseEntity<ApiResponse<List<NotificationDto>>>
+    getUnreadNotifications(
+            @RequestHeader(USER_EMAIL_HEADER) String email
     ) {
 
         List<NotificationDto> notifications =
@@ -51,9 +56,10 @@ public class NotificationController {
     }
 
     @PatchMapping("/{id}/read")
-    public ResponseEntity<ApiResponse<NotificationDto>> markAsRead(
+    public ResponseEntity<ApiResponse<NotificationDto>>
+    markAsRead(
             @PathVariable Long id,
-            @RequestParam String email
+            @RequestHeader(USER_EMAIL_HEADER) String email
     ) {
 
         NotificationDto notification =
@@ -72,8 +78,9 @@ public class NotificationController {
     }
 
     @PatchMapping("/read-all")
-    public ResponseEntity<ApiResponse<Integer>> markAllAsRead(
-            @RequestParam String email
+    public ResponseEntity<ApiResponse<Integer>>
+    markAllAsRead(
+            @RequestHeader(USER_EMAIL_HEADER) String email
     ) {
 
         int updatedCount =
