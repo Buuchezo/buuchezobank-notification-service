@@ -18,7 +18,8 @@ public class TanNotificationListener {
 
     @KafkaListener(
             topics = "tan-notification-event",
-            groupId = "tan-notification-group"
+            groupId = "tan-notification-group",
+            containerFactory = "notificationKafkaListenerContainerFactory"
     )
     public void consume(String message) {
 
