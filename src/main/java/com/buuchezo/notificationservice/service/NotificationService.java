@@ -2,21 +2,41 @@ package com.buuchezo.notificationservice.service;
 
 import com.buuchezo.notificationservice.dto.NotificationDto;
 import com.buuchezo.notificationservice.kafka.dto.BalanceUpdateEvent;
+import com.buuchezo.notificationservice.kafka.dto.TanNotificationEvent;
 import com.buuchezo.notificationservice.kafka.dto.UserRegistrationEvent;
 
 import java.util.List;
 
 public interface NotificationService {
 
-    void processUserRegistration(UserRegistrationEvent event);
+    void processUserRegistration(
+            UserRegistrationEvent event
+    );
 
-    void processBalanceUpdate(BalanceUpdateEvent event);
+    void processBalanceUpdate(
+            BalanceUpdateEvent event
+    );
 
-    List<NotificationDto> getNotifications(String email);
+    void processTanNotification(
+            TanNotificationEvent event
+    );
 
-    List<NotificationDto> getUnreadNotifications(String email);
+    List<NotificationDto> getNotifications(
+            String email
+    );
 
-    NotificationDto markAsRead(Long notificationId, String email);
+    List<NotificationDto> getUnreadNotifications(
+            String email
+    );
 
-    int markAllAsRead(String email);
+    NotificationDto markAsRead(
+            Long notificationId,
+            String email
+    );
+
+    int markAllAsRead(
+            String email
+    );
+
+    void sendTanNotification(TanNotificationEvent event);
 }

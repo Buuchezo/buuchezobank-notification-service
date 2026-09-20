@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+            content="width=device-width, initial-scale=1.0"
+            name="viewport"
+    >
+
+    <title>
+        Transaction Authorization - Buuchezo Bank
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #eef4f9;
+            color: #17324d;
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .email-wrapper {
+            width: 100%;
+            padding: 40px 16px;
+        }
+
+        .email-container {
+            width: 100%;
+            max-width: 620px;
+            margin: 0 auto;
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid #e1eaf2;
+            border-radius: 18px;
+            box-shadow: 0 12px 35px rgba(6, 61, 116, 0.10);
+        }
+
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .header {
+            padding: 30px 35px;
+
+            background: linear-gradient(
+                    135deg,
+                    #063d74 0%,
+                    #07559b 65%,
+                    #143fbd 100%
+            );
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 38px;
+            height: 38px;
+
+            flex-shrink: 0;
+
+            background: #ffffff;
+            color: #07559b;
+
+            border-radius: 11px;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .header-label {
+            margin-top: 14px;
+
+            color: rgba(255, 255, 255, 0.78);
+
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        .accent-line {
+            height: 4px;
+            background: #28c7c1;
+        }
+
+
+        /* =====================================================
+           CONTENT
+           ===================================================== */
+
+        .content {
+            padding: 40px 35px;
+        }
+
+        .eyebrow {
+            margin-bottom: 10px;
+
+            color: #07559b;
+
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .title {
+            margin: 0;
+
+            color: #102f4a;
+
+            font-size: 28px;
+            line-height: 1.25;
+            font-weight: 700;
+        }
+
+        .greeting {
+            margin: 22px 0 8px;
+
+            color: #17324d;
+
+            font-size: 16px;
+        }
+
+        .intro {
+            margin: 0;
+
+            color: #657789;
+
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           TAN CARD
+           ===================================================== */
+
+        .tan-card {
+            margin: 30px 0;
+
+            padding: 28px 20px;
+
+            text-align: center;
+
+            background: linear-gradient(
+                    135deg,
+                    #f0fbfb 0%,
+                    #e7f7fa 100%
+            );
+
+            border: 1px solid #c9eeee;
+            border-radius: 16px;
+        }
+
+        .tan-label {
+            margin-bottom: 8px;
+
+            color: #547086;
+
+            font-size: 12px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .tan {
+            color: #087f82;
+
+            font-family: "Courier New", Courier, monospace;
+
+            font-size: 36px;
+            line-height: 1.2;
+            font-weight: 700;
+
+            letter-spacing: 8px;
+        }
+
+        .tan-badge {
+            display: inline-block;
+
+            margin-top: 12px;
+
+            padding: 6px 12px;
+
+            background: #d8f5ef;
+            color: #087f82;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           DETAILS
+           ===================================================== */
+
+        .details-card {
+            margin-top: 25px;
+
+            overflow: hidden;
+
+            border: 1px solid #e3ebf2;
+            border-radius: 14px;
+        }
+
+        .details-header {
+            padding: 16px 20px;
+
+            background: #f7fafd;
+
+            border-bottom: 1px solid #e3ebf2;
+
+            color: #17324d;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .details-list {
+            margin: 0;
+            padding: 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 13px 20px;
+
+            border-bottom: 1px solid #edf2f6;
+        }
+
+        .detail-row:last-child {
+            border-bottom: 0;
+        }
+
+        .detail-label {
+            color: #8091a1;
+
+            font-size: 13px;
+        }
+
+        .detail-value {
+            color: #17324d;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            text-align: right;
+
+            overflow-wrap: anywhere;
+        }
+
+        .operation-value {
+            color: #07559b;
+            font-weight: 700;
+        }
+
+        .expiry-value {
+            color: #b87922;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           SECURITY NOTE
+           ===================================================== */
+
+        .security-note {
+            margin-top: 25px;
+
+            padding: 16px 18px;
+
+            background: #f4f8fc;
+
+            border-left: 4px solid #28c7c1;
+
+            border-radius: 8px;
+
+            color: #526b80;
+
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           CLOSING
+           ===================================================== */
+
+        .closing {
+            margin: 30px 0 0;
+
+            color: #657789;
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .footer {
+            padding: 28px 35px;
+
+            background: #f5f8fb;
+
+            border-top: 1px solid #e7edf3;
+
+            text-align: center;
+        }
+
+        .footer-brand {
+            margin-bottom: 8px;
+
+            color: #17324d;
+
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .footer-text {
+            color: #8a99a8;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media screen and (max-width: 600px) {
+
+            .email-wrapper {
+                padding: 15px 8px;
+            }
+
+            .header {
+                padding: 25px 22px;
+            }
+
+            .content {
+                padding: 30px 22px;
+            }
+
+            .footer {
+                padding: 25px 22px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .tan {
+                font-size: 30px;
+                letter-spacing: 6px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .detail-value {
+                text-align: left;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="email-wrapper">
+
+    <main class="email-container">
+
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header class="header">
+
+            <div class="brand">
+
+                <span class="brand-badge">
+                    B
+                </span>
+
+                <span th:text="${bankName}">
+                    Buuchezo Bank
+                </span>
+
+            </div>
+
+            <div class="header-label">
+                Your money. Your future.
+            </div>
+
+        </header>
+
+
+        <div class="accent-line"></div>
+
+
+        <!-- =================================================
+             CONTENT
+             ================================================= -->
+
+        <section class="content">
+
+            <div class="eyebrow">
+                Security notification
+            </div>
+
+
+            <h1 class="title">
+                Transaction authorization required
+            </h1>
+
+
+            <p class="greeting">
+
+                Hello
+                <strong th:text="${name}">
+                    Customer
+                </strong>,
+
+            </p>
+
+
+            <p class="intro">
+
+                Your Buuchezo Bank transaction requires
+                authorization. Use the TAN below to confirm
+                the transaction in your banking application.
+
+            </p>
+
+
+            <!-- =================================================
+                 TAN
+                 ================================================= -->
+
+            <section class="tan-card">
+
+                <div class="tan-label">
+                    Transaction Authorization TAN
+                </div>
+
+
+                <div
+                        class="tan"
+                        th:text="${tan}"
+                >
+                    000000
+                </div>
+
+
+                <div class="tan-badge">
+                    ✓ AUTHORIZATION REQUIRED
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 AUTHORIZATION DETAILS
+                 ================================================= -->
+
+            <section class="details-card">
+
+                <div class="details-header">
+                    Authorization details
+                </div>
+
+
+                <dl class="details-list">
+
+
+                    <div class="detail-row">
+
+                        <dt class="detail-label">
+                            Operation
+                        </dt>
+
+                        <dd
+                                class="detail-value operation-value"
+                                th:text="${operation}"
+                        >
+                            TRANSFER
+                        </dd>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <dt class="detail-label">
+                            Expires
+                        </dt>
+
+                        <dd
+                                class="detail-value expiry-value"
+                                th:text="${expiresAt}"
+                        >
+                            20 Sep 2026, 22:24
+                        </dd>
+
+                    </div>
+
+
+                </dl>
+
+            </section>
+
+
+            <!-- =================================================
+                 SECURITY NOTE
+                 ================================================= -->
+
+            <aside class="security-note">
+
+                <strong>
+                    Security reminder
+                </strong>
+
+                <br>
+
+                Never share this TAN with anyone.
+                Buuchezo Bank will never ask you to provide
+                your TAN, password, PIN, or other security
+                credentials by email.
+
+                <br><br>
+
+                This TAN can only be used once and is bound
+                to the transaction for which it was generated.
+
+            </aside>
+
+
+            <!-- =================================================
+                 CLOSING
+                 ================================================= -->
+
+            <p class="closing">
+
+                If you did not request this transaction,
+                do not enter the TAN. Please contact
+                Buuchezo Bank immediately through an
+                official support channel.
+
+            </p>
+
+
+            <p class="closing">
+
+                Thank you for choosing Buuchezo Bank.
+
+            </p>
+
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <footer class="footer">
+
+            <div class="footer-brand">
+                Buuchezo Bank
+            </div>
+
+
+            <div class="footer-text">
+
+                Your money. Your future.<br><br>
+
+                This is an automated security notification.
+                Please do not reply to this email.<br><br>
+
+                © 2026 Buuchezo Bank. All rights reserved.
+
+            </div>
+
+        </footer>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

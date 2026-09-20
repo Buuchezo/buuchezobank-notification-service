@@ -7,6 +7,7 @@ import com.buuchezo.notificationservice.enums.NotificationStatus;
 import com.buuchezo.notificationservice.enums.NotificationType;
 import com.buuchezo.notificationservice.enums.transaction.TransactionDirection;
 import com.buuchezo.notificationservice.kafka.dto.BalanceUpdateEvent;
+import com.buuchezo.notificationservice.kafka.dto.TanNotificationEvent;
 import com.buuchezo.notificationservice.kafka.dto.UserRegistrationEvent;
 import com.buuchezo.notificationservice.repository.NotificationRepository;
 import com.buuchezo.notificationservice.service.EmailService;
@@ -17,14 +18,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class NotificationServiceImpl implements NotificationService {
+public class NotificationServiceImpl
+        implements NotificationService {
 
     private final NotificationRepository notificationRepository;
+
     private final EmailService emailService;
 
     @Override
@@ -41,9 +46,15 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification =
                 Notification.builder()
                         .recipientEmail(event.getEmail())
-                        .notificationType(NotificationType.ACCOUNT)
-                        .channel(NotificationChannel.IN_APP)
-                        .title("Welcome to Buuchezo Bank")
+                        .notificationType(
+                                NotificationType.ACCOUNT
+                        )
+                        .channel(
+                                NotificationChannel.IN_APP
+                        )
+                        .title(
+                                "Welcome to Buuchezo Bank"
+                        )
                         .message(
                                 "Welcome "
                                         + event.getFirstName()
@@ -51,19 +62,25 @@ public class NotificationServiceImpl implements NotificationService {
                                         + event.getAccountNumber()
                                         + " has been successfully created."
                         )
-                        .status(NotificationStatus.SENT)
+                        .status(
+                                NotificationStatus.SENT
+                        )
                         .read(false)
                         .transactionReference(null)
                         .build();
 
-        notificationRepository.save(notification);
+        notificationRepository.save(
+                notification
+        );
 
         log.info(
                 "In-app welcome notification saved for {}",
                 event.getEmail()
         );
 
-        emailService.sendWelcomeEmail(event);
+        emailService.sendWelcomeEmail(
+                event
+        );
     }
 
     @Override
@@ -78,31 +95,118 @@ public class NotificationServiceImpl implements NotificationService {
         );
 
         String title =
-                buildTransactionTitle(event);
+                buildTransactionTitle(
+                        event
+                );
 
         String message =
-                buildTransactionMessage(event);
+                buildTransactionMessage(
+                        event
+                );
 
         Notification notification =
                 Notification.builder()
-                        .recipientEmail(event.getEmail())
-                        .notificationType(NotificationType.TRANSACTION)
-                        .channel(NotificationChannel.IN_APP)
+                        .recipientEmail(
+                                event.getEmail()
+                        )
+                        .notificationType(
+                                NotificationType.TRANSACTION
+                        )
+                        .channel(
+                                NotificationChannel.IN_APP
+                        )
                         .title(title)
                         .message(message)
-                        .status(NotificationStatus.SENT)
+                        .status(
+                                NotificationStatus.SENT
+                        )
                         .read(false)
-                        .transactionReference(event.getReference())
+                        .transactionReference(
+                                event.getReference()
+                        )
                         .build();
 
-        notificationRepository.save(notification);
+        notificationRepository.save(
+                notification
+        );
 
         log.info(
                 "In-app transaction notification saved. Reference: {}",
                 event.getReference()
         );
 
-        emailService.sendTransactionAlertEmail(event);
+        emailService.sendTransactionAlertEmail(
+                event
+        );
+    }
+
+    /**
+     * Handles TAN notifications.
+     * <p>
+     * The TAN itself is deliberately NOT written
+     * to the application log.
+     */
+    @Override
+    @Transactional
+    public void processTanNotification(
+            TanNotificationEvent event
+    ) {
+
+        log.info(
+                "Processing TAN notification. challengeId={}, user={}, operation={}",
+                event.getChallengeId(),
+                event.getUserEmail(),
+                event.getOperation()
+        );
+
+        long expiresInSeconds =
+                calculateRemainingSeconds(
+                        event.getExpiresAt()
+                );
+
+        String title =
+                "Buuchezo Bank TAN";
+
+        String message =
+                buildTanMessage(
+                        event,
+                        expiresInSeconds
+                );
+
+        Notification notification =
+                Notification.builder()
+                        .recipientEmail(
+                                event.getUserEmail()
+                        )
+                        .notificationType(
+                                NotificationType.SECURITY
+                        )
+                        .channel(
+                                NotificationChannel.IN_APP
+                        )
+                        .title(title)
+                        .message(message)
+                        .status(
+                                NotificationStatus.SENT
+                        )
+                        .read(false)
+                        .transactionReference(
+                                event.getChallengeId()
+                        )
+                        .build();
+
+        notificationRepository.save(
+                notification
+        );
+
+        log.info(
+                "In-app TAN notification saved. challengeId={}",
+                event.getChallengeId()
+        );
+
+        emailService.sendTanEmail(
+                event
+        );
     }
 
     @Override
@@ -162,9 +266,10 @@ public class NotificationServiceImpl implements NotificationService {
                                 NotificationChannel.IN_APP
                         )
                         .orElseThrow(
-                                () -> new IllegalArgumentException(
-                                        "Notification not found"
-                                )
+                                () ->
+                                        new IllegalArgumentException(
+                                                "Notification not found"
+                                        )
                         );
 
         if (!notification.isRead()) {
@@ -172,7 +277,9 @@ public class NotificationServiceImpl implements NotificationService {
             notification.setRead(true);
 
             notification =
-                    notificationRepository.save(notification);
+                    notificationRepository.save(
+                            notification
+                    );
 
             log.info(
                     "Notification {} marked as read for {}",
@@ -181,7 +288,9 @@ public class NotificationServiceImpl implements NotificationService {
             );
         }
 
-        return mapToDto(notification);
+        return mapToDto(
+                notification
+        );
     }
 
     @Override
@@ -208,10 +317,13 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
         notifications.forEach(
-                notification -> notification.setRead(true)
+                notification ->
+                        notification.setRead(true)
         );
 
-        notificationRepository.saveAll(notifications);
+        notificationRepository.saveAll(
+                notifications
+        );
 
         log.info(
                 "Marked {} notifications as read for {}",
@@ -227,7 +339,9 @@ public class NotificationServiceImpl implements NotificationService {
     ) {
 
         return NotificationDto.builder()
-                .id(notification.getId())
+                .id(
+                        notification.getId()
+                )
                 .notificationType(
                         notification.getNotificationType()
                 )
@@ -259,10 +373,24 @@ public class NotificationServiceImpl implements NotificationService {
             BalanceUpdateEvent event
     ) {
 
+        /*
+         * Defensive handling.
+         *
+         * Some older Kafka events may not contain
+         * transactionType. This prevents the NPE
+         * you previously encountered.
+         */
+
         if (event.getTransactionDirection()
                 == TransactionDirection.CREDIT) {
 
-            return switch (event.getTransactionType()) {
+            if (event.getTransactionType() == null) {
+                return "Money added to your account";
+            }
+
+            return switch (
+                    event.getTransactionType()
+                    ) {
 
                 case DEPOSIT -> "Money deposited";
 
@@ -274,7 +402,13 @@ public class NotificationServiceImpl implements NotificationService {
             };
         }
 
-        return switch (event.getTransactionType()) {
+        if (event.getTransactionType() == null) {
+            return "Money withdrawn from your account";
+        }
+
+        return switch (
+                event.getTransactionType()
+                ) {
 
             case WITHDRAWAL -> "Cash withdrawal";
 
@@ -296,12 +430,25 @@ public class NotificationServiceImpl implements NotificationService {
                         : "";
 
         String amount =
-                formatAmount(event.getAmount());
+                formatAmount(
+                        event.getAmount()
+                );
 
         if (event.getTransactionDirection()
                 == TransactionDirection.CREDIT) {
 
-            return switch (event.getTransactionType()) {
+            if (event.getTransactionType() == null) {
+
+                return "Your account was credited with "
+                        + currency
+                        + " "
+                        + amount
+                        + ".";
+            }
+
+            return switch (
+                    event.getTransactionType()
+                    ) {
 
                 case DEPOSIT -> "Your account was credited with "
                         + currency
@@ -323,7 +470,17 @@ public class NotificationServiceImpl implements NotificationService {
             };
         }
 
-        return switch (event.getTransactionType()) {
+        if (event.getTransactionType() == null) {
+
+            return currency
+                    + " "
+                    + amount
+                    + " was debited from your account.";
+        }
+
+        return switch (
+                event.getTransactionType()
+                ) {
 
             case WITHDRAWAL -> currency
                     + " "
@@ -347,6 +504,44 @@ public class NotificationServiceImpl implements NotificationService {
         };
     }
 
+    private String buildTanMessage(
+            TanNotificationEvent event,
+            long expiresInSeconds
+    ) {
+
+        long minutes =
+                Math.max(
+                        1,
+                        (expiresInSeconds + 59) / 60
+                );
+
+        return "Your TAN for "
+                + event.getOperation()
+                + " is "
+                + event.getTan()
+                + ". It expires in approximately "
+                + minutes
+                + " minute(s). "
+                + "Never share this TAN with anyone.";
+    }
+
+    private long calculateRemainingSeconds(
+            LocalDateTime expiresAt
+    ) {
+
+        if (expiresAt == null) {
+            return 0;
+        }
+
+        return Math.max(
+                0,
+                Duration.between(
+                        LocalDateTime.now(),
+                        expiresAt
+                ).getSeconds()
+        );
+    }
+
     private String formatAmount(
             BigDecimal amount
     ) {
@@ -361,5 +556,24 @@ public class NotificationServiceImpl implements NotificationService {
                         java.math.RoundingMode.HALF_UP
                 )
                 .toPlainString();
+    }
+
+    @Override
+    public void sendTanNotification(TanNotificationEvent event) {
+
+        if (event == null) {
+            throw new IllegalArgumentException(
+                    "TAN notification event must not be null"
+            );
+        }
+
+        log.info(
+                "Processing TAN notification. challengeId={}, user={}, operation={}",
+                event.getChallengeId(),
+                event.getUserEmail(),
+                event.getOperation()
+        );
+
+        emailService.sendTanEmail(event);
     }
 }

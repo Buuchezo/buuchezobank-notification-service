@@ -6,6 +6,7 @@ import com.buuchezo.notificationservice.enums.NotificationStatus;
 import com.buuchezo.notificationservice.enums.NotificationType;
 import com.buuchezo.notificationservice.enums.transaction.TransactionDirection;
 import com.buuchezo.notificationservice.kafka.dto.BalanceUpdateEvent;
+import com.buuchezo.notificationservice.kafka.dto.TanNotificationEvent;
 import com.buuchezo.notificationservice.kafka.dto.UserRegistrationEvent;
 import com.buuchezo.notificationservice.repository.NotificationRepository;
 import com.buuchezo.notificationservice.service.EmailService;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+
 import java.time.LocalDateTime;
 
 @Service
@@ -30,6 +32,7 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
     private final NotificationRepository notificationRepository;
+    private final JavaMailSender mailSender;
 
     @Value("${spring.mail.username}")
     private String fromEmail;
@@ -339,6 +342,84 @@ public class EmailServiceImpl implements EmailService {
 
             throw new RuntimeException(
                     "Could not send email",
+                    e
+            );
+        }
+    }
+
+    @Override
+    public void sendTanEmail(TanNotificationEvent event) {
+
+        try {
+
+            Context context = new Context();
+
+            context.setVariable(
+                    "name",
+                    "Customer"
+            );
+
+            context.setVariable(
+                    "bankName",
+                    "BUUCHEZO BANK"
+            );
+
+            context.setVariable(
+                    "tan",
+                    event.getTan()
+            );
+
+            context.setVariable(
+                    "operation",
+                    event.getOperation()
+            );
+
+            context.setVariable(
+                    "expiresAt",
+                    event.getExpiresAt()
+                            .format(
+                                    java.time.format.DateTimeFormatter.ofPattern(
+                                            "dd MMM yyyy, HH:mm"
+                                    )
+                            )
+            );
+
+            String htmlEmailTemplate =
+                    templateEngine.process(
+                            "tan-authorization",
+                            context
+                    );
+
+            String subject =
+                    "Transaction Authorization Required";
+
+            sendEmailOut(
+                    event.getUserEmail(),
+                    subject,
+                    htmlEmailTemplate
+            );
+
+            log.info(
+                    "TAN email sent successfully. Recipient: {}, challengeId={}",
+                    event.getUserEmail(),
+                    event.getChallengeId()
+            );
+
+        } catch (Exception e) {
+
+            /*
+             * Never log the actual TAN.
+             */
+
+            log.error(
+                    "Error sending TAN email. Recipient={}, challengeId={}",
+                    event.getUserEmail(),
+                    event.getChallengeId(),
+                    e
+            );
+
+            throw new RuntimeException(
+                    "Error sending TAN email",
                     e
             );
         }
