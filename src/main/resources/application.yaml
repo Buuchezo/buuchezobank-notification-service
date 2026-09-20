@@ -41,7 +41,7 @@ spring:
   # Kafka consumer configuration
   kafka:
     # Address of the Kafka broker
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
 
     consumer:
       # Consumer group used by this service
