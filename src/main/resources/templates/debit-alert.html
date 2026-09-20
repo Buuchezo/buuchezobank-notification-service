@@ -122,10 +122,10 @@
             text-align: center;
             background: linear-gradient(
                     135deg,
-                    #f7f9fc 0%,
-                    #eef3f8 100%
+                    #fff5f5 0%,
+                    #fdf0f0 100%
             );
-            border: 1px solid #dce6ef;
+            border: 1px solid #f3d0d0;
             border-radius: 16px;
         }
 
@@ -138,7 +138,7 @@
         }
 
         .amount {
-            color: #d45757;
+            color: #d9534f;
             font-size: 34px;
             line-height: 1.2;
             font-weight: 700;
@@ -148,8 +148,8 @@
             display: inline-block;
             margin-top: 12px;
             padding: 6px 12px;
-            background: #fbe5e5;
-            color: #b84242;
+            background: #fde3e3;
+            color: #d9534f;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 700;
@@ -194,7 +194,6 @@
         }
 
         .detail-value {
-            margin: 0;
             color: #17324d;
             font-size: 13px;
             font-weight: 600;
@@ -207,23 +206,22 @@
             font-weight: 700;
         }
 
-        .security-warning {
-            margin-top: 25px;
-            padding: 18px;
-            background: #fff8f5;
-            border: 1px solid #f2ddd4;
-            border-left: 4px solid #d45757;
-            border-radius: 8px;
-            color: #765b52;
-            font-size: 12px;
-            line-height: 1.7;
-        }
-
         .closing {
-            margin: 28px 0 0;
+            margin: 30px 0 0;
             color: #657789;
             font-size: 14px;
             line-height: 1.7;
+        }
+
+        .security-note {
+            margin-top: 25px;
+            padding: 16px 18px;
+            background: #f4f8fc;
+            border-left: 4px solid #28c7c1;
+            border-radius: 8px;
+            color: #526b80;
+            font-size: 12px;
+            line-height: 1.6;
         }
 
         .footer {
@@ -292,15 +290,11 @@
         <header class="header">
 
             <div class="brand">
-
-                <span class="brand-badge">
-                    B
-                </span>
+                <span class="brand-badge">B</span>
 
                 <span th:text="${bankName}">
                     Buuchezo Bank
                 </span>
-
             </div>
 
             <div class="header-label">
@@ -329,8 +323,8 @@
             </p>
 
             <p class="intro">
-                A debit has been recorded on your Buuchezo Bank
-                account. Here are the details of the transaction.
+                A debit has been recorded on your Buuchezo Bank account.
+                Here are the details of the transaction.
             </p>
 
             <section class="amount-card">
@@ -361,7 +355,6 @@
                 <dl class="details-list">
 
                     <div class="detail-row">
-
                         <dt class="detail-label">
                             Reference
                         </dt>
@@ -372,11 +365,9 @@
                         >
                             TXN123456
                         </dd>
-
                     </div>
 
                     <div class="detail-row">
-
                         <dt class="detail-label">
                             Account
                         </dt>
@@ -387,11 +378,9 @@
                         >
                             0012345678
                         </dd>
-
                     </div>
 
                     <div class="detail-row">
-
                         <dt class="detail-label">
                             Description
                         </dt>
@@ -402,11 +391,9 @@
                         >
                             Cash withdrawal
                         </dd>
-
                     </div>
 
                     <div class="detail-row">
-
                         <dt class="detail-label">
                             Date
                         </dt>
@@ -417,11 +404,9 @@
                         >
                             2026-09-18
                         </dd>
-
                     </div>
 
                     <div class="detail-row">
-
                         <dt class="detail-label">
                             Current balance
                         </dt>
@@ -432,28 +417,22 @@
                         >
                             USD 850.00
                         </dd>
-
                     </div>
 
                 </dl>
 
             </section>
 
-            <aside class="security-warning">
-
-                <strong>Didn't make this transaction?</strong><br>
-
-                If you don't recognize this activity, please review
-                your account and contact Buuchezo Bank support
-                immediately.
-
-            </aside>
-
             <p class="closing">
+                Your account balance has been updated to reflect this transaction.
                 Thank you for banking with Buuchezo Bank.
-                We're committed to keeping you informed about
-                activity on your account.
             </p>
+
+            <aside class="security-note">
+                <strong>Didn't make this transaction?</strong><br>
+                If you don't recognize this activity, please review your account
+                and contact Buuchezo Bank support immediately.
+            </aside>
 
         </section>
 

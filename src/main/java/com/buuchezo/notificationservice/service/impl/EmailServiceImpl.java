@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-
 import java.time.LocalDateTime;
 
 @Service
@@ -348,21 +347,16 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendTanEmail(TanNotificationEvent event) {
+    public void sendTanEmail(
+            TanNotificationEvent event
+    ) {
+
+        String subject =
+                "Buuchezo Bank - Transaction TAN";
 
         try {
 
             Context context = new Context();
-
-            context.setVariable(
-                    "name",
-                    "Customer"
-            );
-
-            context.setVariable(
-                    "bankName",
-                    "BUUCHEZO BANK"
-            );
 
             context.setVariable(
                     "tan",
@@ -377,11 +371,11 @@ public class EmailServiceImpl implements EmailService {
             context.setVariable(
                     "expiresAt",
                     event.getExpiresAt()
-                            .format(
-                                    java.time.format.DateTimeFormatter.ofPattern(
-                                            "dd MMM yyyy, HH:mm"
-                                    )
-                            )
+            );
+
+            context.setVariable(
+                    "email",
+                    event.getUserEmail()
             );
 
             String htmlEmailTemplate =
@@ -389,9 +383,6 @@ public class EmailServiceImpl implements EmailService {
                             "tan-authorization",
                             context
                     );
-
-            String subject =
-                    "Transaction Authorization Required";
 
             sendEmailOut(
                     event.getUserEmail(),
@@ -407,12 +398,8 @@ public class EmailServiceImpl implements EmailService {
 
         } catch (Exception e) {
 
-            /*
-             * Never log the actual TAN.
-             */
-
             log.error(
-                    "Error sending TAN email. Recipient={}, challengeId={}",
+                    "Failed to send TAN email. Recipient: {}, challengeId={}",
                     event.getUserEmail(),
                     event.getChallengeId(),
                     e
