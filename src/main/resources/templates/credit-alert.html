@@ -3,459 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
     <title>Credit Alert - Buuchezo Bank</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background: #eef4f9;
-            color: #17324d;
-            font-family: Arial, Helvetica, sans-serif;
-            -webkit-text-size-adjust: 100%;
-        }
-
-        .email-wrapper {
-            width: 100%;
-            padding: 40px 16px;
-        }
-
-        .email-container {
-            width: 100%;
-            max-width: 620px;
-            margin: 0 auto;
-            overflow: hidden;
-            background: #ffffff;
-            border: 1px solid #e1eaf2;
-            border-radius: 18px;
-            box-shadow: 0 12px 35px rgba(6, 61, 116, 0.10);
-        }
-
-        .header {
-            padding: 30px 35px;
-            background: linear-gradient(
-                    135deg,
-                    #063d74 0%,
-                    #07559b 65%,
-                    #143fbd 100%
-            );
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #ffffff;
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .brand-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            flex-shrink: 0;
-            background: #ffffff;
-            color: #07559b;
-            border-radius: 11px;
-            font-size: 20px;
-            font-weight: 800;
-        }
-
-        .header-label {
-            margin-top: 14px;
-            color: rgba(255, 255, 255, 0.78);
-            font-size: 13px;
-            letter-spacing: 0.5px;
-        }
-
-        .accent-line {
-            height: 4px;
-            background: #28c7c1;
-        }
-
-        .content {
-            padding: 40px 35px;
-        }
-
-        .eyebrow {
-            margin-bottom: 10px;
-            color: #07559b;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .title {
-            margin: 0;
-            color: #102f4a;
-            font-size: 28px;
-            line-height: 1.25;
-            font-weight: 700;
-        }
-
-        .greeting {
-            margin: 22px 0 8px;
-            color: #17324d;
-            font-size: 16px;
-        }
-
-        .intro {
-            margin: 0;
-            color: #657789;
-            font-size: 15px;
-            line-height: 1.7;
-        }
-
-        .amount-card {
-            margin: 30px 0;
-            padding: 28px 20px;
-            text-align: center;
-            background: linear-gradient(
-                    135deg,
-                    #f0fbfb 0%,
-                    #e7f7fa 100%
-            );
-            border: 1px solid #c9eeee;
-            border-radius: 16px;
-        }
-
-        .amount-label {
-            margin-bottom: 8px;
-            color: #547086;
-            font-size: 12px;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-        }
-
-        .amount {
-            color: #087f82;
-            font-size: 34px;
-            line-height: 1.2;
-            font-weight: 700;
-        }
-
-        .credit-badge {
-            display: inline-block;
-            margin-top: 12px;
-            padding: 6px 12px;
-            background: #d8f5ef;
-            color: #087f82;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .details-card {
-            margin-top: 25px;
-            overflow: hidden;
-            border: 1px solid #e3ebf2;
-            border-radius: 14px;
-        }
-
-        .details-header {
-            padding: 16px 20px;
-            background: #f7fafd;
-            border-bottom: 1px solid #e3ebf2;
-            color: #17324d;
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .details-list {
-            margin: 0;
-            padding: 0;
-        }
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 13px 20px;
-            border-bottom: 1px solid #edf2f6;
-        }
-
-        .detail-row:last-child {
-            border-bottom: 0;
-        }
-
-        .detail-label {
-            color: #8091a1;
-            font-size: 13px;
-        }
-
-        .detail-value {
-            color: #17324d;
-            font-size: 13px;
-            font-weight: 600;
-            text-align: right;
-            overflow-wrap: anywhere;
-        }
-
-        .balance-value {
-            color: #07559b;
-            font-weight: 700;
-        }
-
-        .closing {
-            margin: 30px 0 0;
-            color: #657789;
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-        .security-note {
-            margin-top: 25px;
-            padding: 16px 18px;
-            background: #f4f8fc;
-            border-left: 4px solid #28c7c1;
-            border-radius: 8px;
-            color: #526b80;
-            font-size: 12px;
-            line-height: 1.6;
-        }
-
-        .footer {
-            padding: 28px 35px;
-            background: #f5f8fb;
-            border-top: 1px solid #e7edf3;
-            text-align: center;
-        }
-
-        .footer-brand {
-            margin-bottom: 8px;
-            color: #17324d;
-            font-size: 15px;
-            font-weight: 700;
-        }
-
-        .footer-text {
-            color: #8a99a8;
-            font-size: 11px;
-            line-height: 1.7;
-        }
-
-        @media screen and (max-width: 600px) {
-            .email-wrapper {
-                padding: 15px 8px;
-            }
-
-            .header {
-                padding: 25px 22px;
-            }
-
-            .content {
-                padding: 30px 22px;
-            }
-
-            .footer {
-                padding: 25px 22px;
-            }
-
-            .title {
-                font-size: 24px;
-            }
-
-            .amount {
-                font-size: 30px;
-            }
-
-            .detail-row {
-                flex-direction: column;
-                gap: 4px;
-            }
-
-            .detail-value {
-                text-align: left;
-            }
-        }
-    </style>
 </head>
+<body style="margin:0;padding:0;background-color:#eef4f9;color:#17324d;font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;background-color:#eef4f9;"
+       width="100%">
+    <tr>
+        <td align="center" style="padding:30px 12px;">
+            <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;max-width:620px;background-color:#ffffff;border:1px solid #e1eaf2;"
+                   width="620">
+                <tr>
+                    <td style="padding:30px 35px;background-color:#07559b;">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation">
+                            <tr>
+                                <td style="width:38px;height:38px;background-color:#ffffff;color:#07559b;font-size:20px;font-weight:800;text-align:center;vertical-align:middle;">
+                                    B
+                                </td>
+                                <td style="padding-left:10px;color:#ffffff;font-size:24px;font-weight:700;">Buuchezo
+                                    Bank
+                                </td>
+                            </tr>
+                        </table>
+                        <div style="margin-top:14px;color:#dbeaff;font-size:13px;letter-spacing:.5px;">Your money. Your
+                            future.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="height:4px;background-color:#28c7c1;font-size:0;line-height:0;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="padding:38px 35px;">
+                        <div style="margin-bottom:10px;color:#07559b;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;">
+                            Transaction notification
+                        </div>
+                        <h1 style="margin:0;color:#102f4a;font-size:28px;line-height:1.25;font-weight:700;">Money added
+                            to your account</h1>
+                        <p style="margin:22px 0 8px;color:#17324d;font-size:16px;">Hello <strong th:text="${name}">Customer</strong>,
+                        </p>
+                        <p style="margin:0;color:#657789;font-size:15px;line-height:1.7;">A credit has been recorded on
+                            your Buuchezo Bank account. Here are the details of the transaction.</p>
 
-<body>
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:28px;background-color:#f2fbf5;border:1px solid #ccebd7;"
+                               width="100%">
+                            <tr>
+                                <td align="center" style="padding:27px 20px;">
+                                    <div style="color:#547086;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;">
+                                        Amount credited
+                                    </div>
+                                    <div style="margin-top:8px;color:#18864b;font-size:34px;line-height:1.2;font-weight:700;">
+                                        <span th:text="${currency}">USD</span> <span th:text="${amount}">100.00</span>
+                                    </div>
+                                    <div style="display:inline-block;margin-top:12px;padding:6px 12px;background-color:#dff5e7;color:#18864b;font-size:12px;font-weight:700;">
+                                        ✓ CREDITED
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
 
-<div class="email-wrapper">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:25px;border:1px solid #e3ebf2;"
+                               width="100%">
+                            <tr>
+                                <td colspan="2"
+                                    style="padding:16px 20px;background-color:#f7fafd;border-bottom:1px solid #e3ebf2;color:#17324d;font-size:14px;font-weight:700;">
+                                    Transaction details
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:13px 20px;border-bottom:1px solid #edf2f6;color:#8091a1;font-size:13px;"
+                                    width="38%">
+                                    Reference
+                                </td>
+                                <td style="padding:13px 20px;border-bottom:1px solid #edf2f6;color:#17324d;font-size:13px;font-weight:600;text-align:right;"
+                                    th:text="${reference}">TRF123456
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:13px 20px;border-bottom:1px solid #edf2f6;color:#8091a1;font-size:13px;">
+                                    Account
+                                </td>
+                                <td style="padding:13px 20px;border-bottom:1px solid #edf2f6;color:#17324d;font-size:13px;font-weight:600;text-align:right;"
+                                    th:text="${accountNumber}">0012345678
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:13px 20px;border-bottom:1px solid #edf2f6;color:#8091a1;font-size:13px;">
+                                    Description
+                                </td>
+                                <td style="padding:13px 20px;border-bottom:1px solid #edf2f6;color:#17324d;font-size:13px;font-weight:600;text-align:right;"
+                                    th:text="${description}">Bank Transaction
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:13px 20px;border-bottom:1px solid #edf2f6;color:#8091a1;font-size:13px;">
+                                    Date
+                                </td>
+                                <td style="padding:13px 20px;border-bottom:1px solid #edf2f6;color:#17324d;font-size:13px;font-weight:600;text-align:right;"
+                                    th:text="${date}">2026-09-21
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:13px 20px;color:#8091a1;font-size:13px;">Current balance</td>
+                                <td style="padding:13px 20px;color:#07559b;font-size:13px;font-weight:700;text-align:right;"
+                                    th:text="${balance}">1000.00
+                                </td>
+                            </tr>
+                        </table>
 
-    <main class="email-container">
+                        <p style="margin:28px 0 0;color:#657789;font-size:14px;line-height:1.7;">
+                            Your account balance has been updated to reflect this transaction.<br>
+                            Thank you for banking with Buuchezo Bank.
+                        </p>
 
-        <header class="header">
-
-            <div class="brand">
-                <span class="brand-badge">B</span>
-
-                <span th:text="${bankName}">
-                    Buuchezo Bank
-                </span>
-            </div>
-
-            <div class="header-label">
-                Your money. Your future.
-            </div>
-
-        </header>
-
-        <div class="accent-line"></div>
-
-        <section class="content">
-
-            <div class="eyebrow">
-                Transaction notification
-            </div>
-
-            <h1 class="title">
-                Money added to your account
-            </h1>
-
-            <p class="greeting">
-                Hello
-                <strong th:text="${name}">
-                    Customer
-                </strong>,
-            </p>
-
-            <p class="intro">
-                Your Buuchezo Bank account has received a credit.
-                Here are the details of the transaction.
-            </p>
-
-            <section class="amount-card">
-
-                <div class="amount-label">
-                    Amount credited
-                </div>
-
-                <div
-                        class="amount"
-                        th:text="${currency} + ' ' + ${amount}"
-                >
-                    USD 1,000.00
-                </div>
-
-                <div class="credit-badge">
-                    ✓ CREDITED
-                </div>
-
-            </section>
-
-            <section class="details-card">
-
-                <div class="details-header">
-                    Transaction details
-                </div>
-
-                <dl class="details-list">
-
-                    <div class="detail-row">
-                        <dt class="detail-label">
-                            Reference
-                        </dt>
-
-                        <dd
-                                class="detail-value"
-                                th:text="${reference}"
-                        >
-                            TXN123456
-                        </dd>
-                    </div>
-
-                    <div class="detail-row">
-                        <dt class="detail-label">
-                            Account
-                        </dt>
-
-                        <dd
-                                class="detail-value"
-                                th:text="${accountNumber}"
-                        >
-                            0012345678
-                        </dd>
-                    </div>
-
-                    <div class="detail-row">
-                        <dt class="detail-label">
-                            Description
-                        </dt>
-
-                        <dd
-                                class="detail-value"
-                                th:text="${description}"
-                        >
-                            Bank transfer
-                        </dd>
-                    </div>
-
-                    <div class="detail-row">
-                        <dt class="detail-label">
-                            Date
-                        </dt>
-
-                        <dd
-                                class="detail-value"
-                                th:text="${date}"
-                        >
-                            2026-09-18
-                        </dd>
-                    </div>
-
-                    <div class="detail-row">
-                        <dt class="detail-label">
-                            Current balance
-                        </dt>
-
-                        <dd
-                                class="detail-value balance-value"
-                                th:text="${currency} + ' ' + ${balance}"
-                        >
-                            USD 1,850.00
-                        </dd>
-                    </div>
-
-                </dl>
-
-            </section>
-
-            <p class="closing">
-                The funds are now reflected in your account balance.
-                Thank you for choosing Buuchezo Bank.
-            </p>
-
-            <aside class="security-note">
-                <strong>Security reminder</strong><br>
-                Buuchezo Bank will never ask you for your password,
-                PIN, CVV, or one-time security code by email.
-            </aside>
-
-        </section>
-
-        <footer class="footer">
-
-            <div class="footer-brand">
-                Buuchezo Bank
-            </div>
-
-            <div class="footer-text">
-                Your money. Your future.<br><br>
-
-                This is an automated transaction notification.
-                Please do not reply to this email.<br><br>
-
-                © 2026 Buuchezo Bank. All rights reserved.
-            </div>
-
-        </footer>
-
-    </main>
-
-</div>
-
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:24px;background-color:#f4f8fc;border-left:4px solid #28c7c1;"
+                               width="100%">
+                            <tr>
+                                <td style="padding:15px 16px;color:#526b80;font-size:12px;line-height:1.6;">
+                                    <strong>Didn't make this transaction?</strong><br>
+                                    If you don't recognize this activity, please review your account and contact
+                                    Buuchezo Bank support immediately.
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="padding:26px 35px;background-color:#f5f8fb;border-top:1px solid #e7edf3;">
+                        <div style="color:#17324d;font-size:15px;font-weight:700;">Buuchezo Bank</div>
+                        <div style="margin-top:8px;color:#8a99a8;font-size:11px;line-height:1.7;">
+                            Your money. Your future.<br><br>
+                            This is an automated transaction notification. Please do not reply to this email.<br><br>
+                            &copy; 2026 Buuchezo Bank. All rights reserved.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 </body>
 </html>
