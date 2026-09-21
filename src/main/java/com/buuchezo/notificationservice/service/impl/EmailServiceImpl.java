@@ -315,6 +315,10 @@ public class EmailServiceImpl implements EmailService {
                     htmlTemplate,
                     true
             );
+            log.info(
+                    "EMAIL MIME TYPE = {}",
+                    mailMessage.getContentType()
+            );
 
             javaMailSender.send(mailMessage);
 
