@@ -227,7 +227,27 @@ public class EmailServiceImpl implements EmailService {
                             context
                     );
 
-            sendEmailOut(
+        
+log.info(
+        "EMAIL DEBUG - template={}, recipient={}, htmlLength={}",
+        templateName,
+        event.getEmail(),
+        htmlEmailTemplate.length()
+);
+
+log.info(
+        "EMAIL DEBUG - HTML START:\n{}",
+        htmlEmailTemplate.substring(
+                0,
+                Math.min(1000, htmlEmailTemplate.length())
+        )
+);
+
+
+
+
+
+sendEmailOut(
                     event.getEmail(),
                     title,
                     htmlEmailTemplate
@@ -387,6 +407,23 @@ public class EmailServiceImpl implements EmailService {
                             "tan-authorization",
                             context
                     );
+
+log.info(
+        "EMAIL DEBUG - template=tan-authorization, recipient={}, htmlLength={}",
+        event.getUserEmail(),
+        htmlEmailTemplate.length()
+);
+
+log.info(
+        "EMAIL DEBUG - HTML START:\n{}",
+        htmlEmailTemplate.substring(
+                0,
+                Math.min(1000, htmlEmailTemplate.length())
+        )
+);
+
+
+
 
             sendEmailOut(
                     event.getUserEmail(),
